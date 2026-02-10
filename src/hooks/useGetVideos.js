@@ -2,19 +2,32 @@ import { useEffect, useState } from "react"
 import { YOUTUBE_API } from "../utils/constants";
 
 export const useGetVideos = () => {
-    const [videos, setVideos] = useState(null);
+    const [ytVideos, setYtVideos] = useState([]);
+    const [showShimmer, setShowShimmer] = useState(false);
     useEffect(() => {
         getVideos();
+
+        window.addEventListener("scroll", handleScroll)
+        return () => {
+            window.removeEventListener("scroll", handleScroll)
+        }
     },[])
-    const getVideos = async () => {
-        try{
-            const data = await fetch(YOUTUBE_API);
-            const json = await data.json();
-            setVideos(json)
-            
-        }catch(err){
-            console.log(err)
+    const handleScroll = () => {
+        if(window.scrollY + window.innerHeight >= document.body.scrollHeight){
+            getVideos()
         }
     }
-    return videos;
+    const getVideos = async () => {
+        try{
+            setShowShimmer(true)
+            const data = await fetch(YOUTUBE_API);
+            const json = await data.json();
+            setShowShimmer(false)
+            setYtVideos((videos) => [...videos, ...json.items])
+            
+        }catch(err){
+            console.error(err)
+        }
+    }
+    return {ytVideos, showShimmer};
 }

@@ -1,4 +1,4 @@
-import { CgProfile } from "react-icons/cg"
+import Comment from "./Comment"
 const commentsData = [
         {
             name : "Prasanth",
@@ -81,26 +81,12 @@ const commentsData = [
             ]
         }
     ]
-    const Comment = ({data}) => {
-        const {name, comment} = data
-        return(
-            <div className="flex gap-4 items-center bg-gray-200 rounded shadow p-2">
-                <>
-                <CgProfile size={30}/>
-                </>
-                <div>
-                    <p>{name}</p>
-                    <p>{comment}</p>
-                </div>
-            </div>
-        )
-    }
     const CommentsList = ({comments}) => {
         return comments.map((comment, index) => (
-            <div>
-                <Comment key={index} data={comment}/>
+            <div key={index}>
+                <Comment data={comment}/>
                 <div className="border ml-5 pl-5 my-1">
-                    <CommentsList key={index} comments={comment.replies} />
+                    <CommentsList comments={comment.replies} />
                 </div>
             </div>
         ))

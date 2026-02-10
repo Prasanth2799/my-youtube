@@ -18,7 +18,6 @@ const Header = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       if(searchCache[searchQuery]){
-        console.log("CACHE "+ searchQuery)
         setSuggestions(searchCache[searchQuery])
       }else{
         fetchSearchResults()
